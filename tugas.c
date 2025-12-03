@@ -1,8 +1,8 @@
-#include <stdio.h>4
+#include <stdio.h>
 int main()
 {
     int angka;
 
     printf("Masukkan angka: ");
     scanf("%d", &angka);
-}
+} 
