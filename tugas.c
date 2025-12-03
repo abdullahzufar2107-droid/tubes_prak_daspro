@@ -4,6 +4,6 @@ int main()
     int angka;
 
     printf("Masukkan angka: ");
-    printf("rama ganteng");
     scanf("%d", &angka);
+    printf("Terimakasih");
 } 
