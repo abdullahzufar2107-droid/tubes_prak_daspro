@@ -5,5 +5,4 @@ int main()
 
     printf("Masukkan angka: ");
     scanf("%d", &angka);
-    printf("Terima Kasih");
 } 
