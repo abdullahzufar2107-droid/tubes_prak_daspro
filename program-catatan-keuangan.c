@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int pilihan;
 int running = 1;   // agar looping
 
