@@ -129,11 +129,40 @@ void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi) {
     printf("| %-42s %7d |\n", "Total transaksi:", jumlahTransaksi);
     printf("+------------------------------------------+---------+\n");
 }
-
+// Fungsi Utama Menu 3: lihat saldo
 void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi) {
+    printf("\n======== LIHAT SALDO ========\n");
+
+    if (jumlahTransaksi == 0) {
+        printf("Belum ada transaksi.\n");
+        printf("Saldo saat ini: 0\n");
+        printf("==============================\n");
+        return;
+    }
+
     int saldo = hitungSaldo(transaksi, jumlahTransaksi);
-    printf("Saldo saat ini: %d\n", saldo);
+
+    printf("Total pemasukan  : ");
+    int pemasukan = 0;
+    int pengeluaran = 0;
+
+    // Hitung pemasukan & pengeluaran secara terpisah
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        if (transaksi[i].jenis == 'M' || transaksi[i].jenis == 'm') {
+            pemasukan += transaksi[i].jumlah;
+        } else {
+            pengeluaran += transaksi[i].jumlah;
+        }
+    }
+
+    printf("Rp %d\n", pemasukan);
+    printf("Total pengeluaran: Rp %d\n", pengeluaran);
+
+    printf("--------------------------------\n");
+    printf("Saldo saat ini    : Rp %d\n", saldo);
+    printf("================================\n");
 }
+
 
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi) {
     // ini untuk bagian simpan file ya (gideon)
