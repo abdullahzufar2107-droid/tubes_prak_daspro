@@ -18,6 +18,49 @@ void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi);
 void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi);
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi);
 void bersihkanBuffer();
+void muatFile(Transaksi transaksi[], int *jumlahTransaksi);
+
+
+// Fungsi muat data dari file saat program dimulai
+void muatFile(Transaksi transaksi[], int *jumlahTransaksi) {
+    FILE *file = fopen("data_transaksi.txt", "r");
+    char line[256];
+    int count = 0;
+
+    if (file == NULL) {
+        printf("File 'data_transaksi.txt' tidak ditemukan. Mulai dengan data kosong.\n");
+        *jumlahTransaksi = 0;
+        return;
+    }
+
+    // Membaca setiap baris dalam file
+    while (fgets(line, sizeof(line), file) != NULL && count < MAX) {
+        // Menggunakan strtok untuk memecah string berdasarkan koma (,)
+        char *token;
+
+        // Tanggal
+        token = strtok(line, ",");
+        if (token) strcpy(transaksi[count].tanggal, token);
+
+        // Jenis
+        token = strtok(NULL, ",");
+        if (token) transaksi[count].jenis = token[0];
+
+        // Kategori
+        token = strtok(NULL, ",");
+        if (token) strcpy(transaksi[count].kategori, token);
+
+        // Jumlah
+        token = strtok(NULL, ",");
+        if (token) transaksi[count].jumlah = atoi(token);
+
+        count++;
+    }
+
+    fclose(file);
+    *jumlahTransaksi = count;
+    printf("Data berhasil dimuat dari 'data_transaksi.txt'. Jumlah transaksi: %d\n", *jumlahTransaksi);
+}
 
 // Fungsi pembersih buffer input
 void bersihkanBuffer() {
@@ -165,9 +208,26 @@ void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi) {
 
 
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi) {
-    // ini untuk bagian simpan file ya (gideon)
+    FILE *file = fopen("data_transaksi.txt", "w"); 
+
+    if (file == NULL) {
+        printf("Error: Gagal membuka file untuk penyimpanan!\n");
+        return;
+    }
+
+    // Tulis semua transaksi dari array ke file dengan format CSV (koma terpisah)
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        fprintf(file, "%s,%c,%s,%d\n", 
+                transaksi[i].tanggal, 
+                transaksi[i].jenis, 
+                transaksi[i].kategori, 
+                transaksi[i].jumlah);
+    }
+
+    fclose(file);
 }
-    
+
+void muatFile(Transaksi transaksi[], int *jumlahTransaksi);    
 
 // Fungsi Main:
 int main() {
@@ -175,6 +235,8 @@ int main() {
     int jumlahTransaksi = 0;
     int pilihan;
     int running = 1;
+    // --- PANGGIL MUAT FILE DI SINI ---
+    muatFile(transaksi, &jumlahTransaksi);
 
     while (running) {
         printf("\n===== CATATAN KEUANGAN HARIAN =====\n");
