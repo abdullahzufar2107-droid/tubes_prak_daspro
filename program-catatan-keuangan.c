@@ -174,18 +174,18 @@ void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi) {
 }
 // Fungsi Utama Menu 3: lihat saldo
 void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi) {
-    printf("\n======== LIHAT SALDO ========\n");
+    printf("\n========== LIHAT SALDO ==========\n");
 
     if (jumlahTransaksi == 0) {
         printf("Belum ada transaksi.\n");
         printf("Saldo saat ini: 0\n");
-        printf("==============================\n");
+        printf("===============================\n");
         return;
     }
 
     int saldo = hitungSaldo(transaksi, jumlahTransaksi);
 
-    printf("Total pemasukan  : ");
+    printf("Total pemasukan   : ");
     int pemasukan = 0;
     int pengeluaran = 0;
 
@@ -199,11 +199,11 @@ void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi) {
     }
 
     printf("Rp %d\n", pemasukan);
-    printf("Total pengeluaran: Rp %d\n", pengeluaran);
+    printf("Total pengeluaran : Rp %d\n", pengeluaran);
 
-    printf("--------------------------------\n");
+    printf("---------------------------------\n");
     printf("Saldo saat ini    : Rp %d\n", saldo);
-    printf("================================\n");
+    printf("=================================\n");
 }
 
 
@@ -239,12 +239,12 @@ int main() {
     muatFile(transaksi, &jumlahTransaksi);
 
     while (running) {
-        printf("\n===== CATATAN KEUANGAN HARIAN =====\n");
-        printf("1. Tambah Transaksi\n");
-        printf("2. Lihat Laporan Transaksi\n");
-        printf("3. Lihat Saldo\n");
-        printf("4. Simpan & Keluar\n");
-        printf("===================================\n");
+        printf("\n======= CATATAN KEUANGAN HARIAN =======\n");
+        printf("| 1. Tambah Transaksi                 |\n");
+        printf("| 2. Lihat Laporan Transaksi          |\n");
+        printf("| 3. Lihat Saldo                      |\n");
+        printf("| 4. Simpan & Keluar                  |\n");
+        printf("=======================================\n");
         printf("Pilih menu: ");
         scanf("%d", &pilihan);
 
