@@ -7,7 +7,7 @@
 typedef struct {
     char tanggal[11];     // DD/MM/YYYY
     char jenis;           // 'M' = pemasukan, 'K' = pengeluaran
-    char kategori[50];
+    char keterangan[50];
     int jumlah;
 } Transaksi;
 
@@ -19,48 +19,6 @@ void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi);
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi);
 void bersihkanBuffer();
 void muatFile(Transaksi transaksi[], int *jumlahTransaksi);
-
-
-// Fungsi muat data dari file saat program dimulai
-void muatFile(Transaksi transaksi[], int *jumlahTransaksi) {
-    FILE *file = fopen("data_transaksi.txt", "r");
-    char line[256];
-    int count = 0;
-
-    if (file == NULL) {
-        printf("File 'data_transaksi.txt' tidak ditemukan. Mulai dengan data kosong.\n");
-        *jumlahTransaksi = 0;
-        return;
-    }
-
-    // Membaca setiap baris dalam file
-    while (fgets(line, sizeof(line), file) != NULL && count < MAX) {
-        // Menggunakan strtok untuk memecah string berdasarkan koma (,)
-        char *token;
-
-        // Tanggal
-        token = strtok(line, ",");
-        if (token) strcpy(transaksi[count].tanggal, token);
-
-        // Jenis
-        token = strtok(NULL, ",");
-        if (token) transaksi[count].jenis = token[0];
-
-        // Kategori
-        token = strtok(NULL, ",");
-        if (token) strcpy(transaksi[count].kategori, token);
-
-        // Jumlah
-        token = strtok(NULL, ",");
-        if (token) transaksi[count].jumlah = atoi(token);
-
-        count++;
-    }
-
-    fclose(file);
-    *jumlahTransaksi = count;
-    printf("Data berhasil dimuat dari 'data_transaksi.txt'. Jumlah transaksi: %d\n", *jumlahTransaksi);
-}
 
 // Fungsi pembersih buffer input
 void bersihkanBuffer() {
@@ -90,7 +48,7 @@ void tambahTransaksi(Transaksi transaksi[], int *jumlahTransaksi) {
 
     char tanggal[11];
     char jenis;
-    char kategori[50];
+    char keterangan[50];
     int jumlah;
 
     printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
@@ -99,10 +57,10 @@ void tambahTransaksi(Transaksi transaksi[], int *jumlahTransaksi) {
     printf("Jenis transaksi (M = Pemasukan, K = Pengeluaran): ");
     scanf(" %c", &jenis);
 
-    printf("Masukkan kategori: ");
+    printf("Masukkan keterangan: ");
     bersihkanBuffer(); // kosongkan buffer sebelum baca string
-    fgets(kategori, sizeof(kategori), stdin);
-    kategori[strcspn(kategori, "\n")] = '\0'; // hapus newline
+    fgets(keterangan, sizeof(keterangan), stdin);
+    keterangan[strcspn(keterangan, "\n")] = '\0'; // hapus newline
 
     printf("Masukkan jumlah uang: ");
     scanf("%d", &jumlah);
@@ -112,7 +70,7 @@ void tambahTransaksi(Transaksi transaksi[], int *jumlahTransaksi) {
         // Pemasukan
         strcpy(transaksi[*jumlahTransaksi].tanggal, tanggal);
         transaksi[*jumlahTransaksi].jenis = jenis;
-        strcpy(transaksi[*jumlahTransaksi].kategori, kategori);
+        strcpy(transaksi[*jumlahTransaksi].keterangan, keterangan);
         transaksi[*jumlahTransaksi].jumlah = jumlah;
 
         (*jumlahTransaksi)++;
@@ -125,7 +83,7 @@ void tambahTransaksi(Transaksi transaksi[], int *jumlahTransaksi) {
         if (saldo >= jumlah){
             strcpy(transaksi[*jumlahTransaksi].tanggal, tanggal);
             transaksi[*jumlahTransaksi].jenis = jenis;
-            strcpy(transaksi[*jumlahTransaksi].kategori, kategori);
+            strcpy(transaksi[*jumlahTransaksi].keterangan, keterangan);
             transaksi[*jumlahTransaksi].jumlah = jumlah;
 
             (*jumlahTransaksi)++;
@@ -148,7 +106,7 @@ void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi) {
     // Header tabel — pakai border dan pemisah |
     printf("\n");
     printf("+------------+--------+-----------------+------------+\n");
-    printf("| %-10s | %-6s | %-15s | %-10s |\n", "Tanggal", "Jenis", "Kategori", "Jumlah");
+    printf("| %-10s | %-6s | %-15s | %-10s |\n", "Tanggal", "Jenis", "Keterangan", "Jumlah");
     printf("+------------+--------+-----------------+------------+\n");
 
     // Isi tabel
@@ -164,7 +122,7 @@ void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi) {
         printf("| %-10s | %-6s | %-15s | Rp %-7d |\n",
                transaksi[i].tanggal,
                jenisStr,
-               transaksi[i].kategori,
+               transaksi[i].keterangan,
                transaksi[i].jumlah);
     }
     // Footer tabel
@@ -206,7 +164,7 @@ void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi) {
     printf("=================================\n");
 }
 
-
+// Fungsi untuk menyimpan file
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi) {
     FILE *file = fopen("data_transaksi.txt", "w"); 
 
@@ -220,14 +178,53 @@ void simpanFile(Transaksi transaksi[], int jumlahTransaksi) {
         fprintf(file, "%s,%c,%s,%d\n", 
                 transaksi[i].tanggal, 
                 transaksi[i].jenis, 
-                transaksi[i].kategori, 
+                transaksi[i].keterangan, 
                 transaksi[i].jumlah);
     }
 
     fclose(file);
 }
 
-void muatFile(Transaksi transaksi[], int *jumlahTransaksi);    
+// Fungsi muat data dari file saat program dimulai
+void muatFile(Transaksi transaksi[], int *jumlahTransaksi) {
+    FILE *file = fopen("data_transaksi.txt", "r");
+    char line[100];
+    int count = 0;
+
+    if (file == NULL) {
+        printf("File 'data_transaksi.txt' tidak ditemukan. Mulai dengan data kosong.\n");
+        *jumlahTransaksi = 0;
+        return;
+    }
+
+    // Membaca setiap baris dalam file
+    while (fgets(line, sizeof(line), file) != NULL && count < MAX) {
+        // Menggunakan strtok untuk memecah string berdasarkan koma (,)
+        char *token;
+
+        // Tanggal
+        token = strtok(line, ",");
+        if (token) strcpy(transaksi[count].tanggal, token);
+
+        // Jenis
+        token = strtok(NULL, ",");
+        if (token) transaksi[count].jenis = token[0];
+
+        // Keterangan
+        token = strtok(NULL, ",");
+        if (token) strcpy(transaksi[count].keterangan, token);
+
+        // Jumlah
+        token = strtok(NULL, ",");
+        if (token) transaksi[count].jumlah = atoi(token);
+
+        count++;
+    }
+
+    fclose(file);
+    *jumlahTransaksi = count;
+    printf("Data berhasil dimuat dari 'data_transaksi.txt'. Jumlah transaksi: %d\n", *jumlahTransaksi);
+}
 
 // Fungsi Main:
 int main() {
@@ -240,7 +237,7 @@ int main() {
 
     while (running) {
         printf("\n======= CATATAN KEUANGAN HARIAN =======\n");
-        printf("| 1. Tambah Transaksi                 |\n");
+        printf("| 1. Tambah Laporan Transaksi         |\n");
         printf("| 2. Lihat Laporan Transaksi          |\n");
         printf("| 3. Lihat Saldo                      |\n");
         printf("| 4. Simpan & Keluar                  |\n");
