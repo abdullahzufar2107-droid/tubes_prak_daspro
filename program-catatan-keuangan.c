@@ -17,7 +17,7 @@ int hitungSaldo(Transaksi transaksi[], int jumlahTransaksi);
 void lihatLaporan(Transaksi transaksi[], int jumlahTransaksi);
 void lihatSaldo(Transaksi transaksi[], int jumlahTransaksi);
 void simpanFile(Transaksi transaksi[], int jumlahTransaksi);
-void bersihkanBuffer();
+void bersihkanBuffer(); 
 
 // Fungsi pembersih buffer input
 void bersihkanBuffer() {
@@ -48,7 +48,7 @@ void tambahTransaksi(Transaksi transaksi[], int *jumlahTransaksi) {
     char tanggal[11];
     char jenis;
     char kategori[50];
-    int jumlah;
+    int jumlah;    
 
     printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
     scanf("%10s", tanggal);
@@ -102,7 +102,7 @@ int main() {
                 printf("Pilihan tidak valid, silakan pilih menu yang tersedia.\n");
         }
 
-        // Kembali ke menu (jika belum keluar)
+        // Kembali ke menu (jika belum keluar) 
         if (running) {
             printf("\nTekan ENTER untuk kembali ke menu...");
             bersihkanBuffer();
