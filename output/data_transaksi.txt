@@ -1,0 +1,5 @@
+30/12/2025,M,Isi saldo,100000
+30/12/2025,K,Bayar makan,33000
+30/12/2025,M,Rezeki,250000
+30/12/2025,k,Bayar Utang,97000
+1/01/2026,k,Beli barang,44000
